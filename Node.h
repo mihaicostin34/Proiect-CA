@@ -4,8 +4,15 @@ template <typename T> class Node {
 		T content;
 		int priority;
 		bool marked;
+		
+		Node <T>* next;
+		Node <T>* prev;
 
-		//metodes
-
-
+		Node(T content, int priority) {
+			next = NULL;
+			prev = NULL;
+			this->content = content;
+			this->priority = priority;
+			this->marked = false;
+		}
 };
