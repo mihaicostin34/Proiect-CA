@@ -5,19 +5,36 @@
 
 template <typename T> class FibonacciHeap {
 	public:
-		DoubleLinkedList<BinomialTree> topLevel;
-		Node<T> min;
+		DoubleLinkedList<T> rootList;
+		Node<T> * min;
+		int nrNodes;
 
 		FibonacciHeap() {
 			//constructor
+			nrNodes = 0;
+			min = NULL;
+			DoubleLinkedList<T> rootlist();
 		}
 
-		void insertNode(Node n) {
-			
+		void insertNode(T info, int priority) {
+			Node<T>* aux = new Node<T>(info, priority);
+			if (min == NULL) {
+				min = aux;
+				rootList->add(info, priority);
+			}
+			else {
+				rootList->add(info, priority);
+				if (priority < min->priority) {
+					min = aux;
+				}
+			}
+			nrNodes++;
 		}
 
-		Node<T> getMin(){
+		Node<T>* extractMin(){
 			//calculates next min
+
+			//deletes current min
 
 			//returns min
 			return min;
@@ -27,8 +44,14 @@ template <typename T> class FibonacciHeap {
 		
 		}
 
-		void delete(T value){
+		void deleteNode(T value){
 		
+		}
+
+		static FibonacciHeap *  merge(FibonacciHeap * H1, FibonacciHeap * H2) {
+			FibonacciHeap* H = new FibonacciHeap;
+
+			return H;
 		}
 
 };

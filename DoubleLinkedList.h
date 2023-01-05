@@ -4,7 +4,7 @@ template <typename T> class DoubleLinkedList {
 public:
     Node <T>* pfirst;
 
-    LinkedList()
+    DoubleLinkedList()
     { //constructeur
         pfirst = NULL;
     }
@@ -46,6 +46,14 @@ public:
 
     int isEmpty() {
         return (pfirst == NULL);
+    }
+
+    void display() {
+        Node <T>* aux = pfirst;
+        do {
+            std::cout << "Info" << aux->content << " priority" << aux->priority << std::endl;
+            aux = aux->next;
+        } while (aux != pfirst);
     }
 
 };
