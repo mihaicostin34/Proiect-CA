@@ -2,4 +2,5 @@
 template <typename T> class BinomialTree {
 	public:
 
+
 };

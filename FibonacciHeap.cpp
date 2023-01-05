@@ -6,21 +6,11 @@
 
 int main()
 {
-    //DoubleLinkedList test
-    DoubleLinkedList<char> list;
-    std::cout << list.isEmpty();
-    list.add('c', 20);
-    list.add('x', 1);
-    list.add('g', 5);
-    list.add('t', 70);
-    list.display(); //display is working
-
-    list.remove('g');
-    list.display();
-
-
-
-
-
+	//double linked list test works
+	DoubleLinkedList<char> list;
+	list.add('c', 20);
+	list.add('d', 2);
+	list.add('a', 40);
+	list.display();
 }
 
