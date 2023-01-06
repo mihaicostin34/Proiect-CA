@@ -9,8 +9,8 @@ public:
         pfirst = NULL;
     }
 
-    void add(T info, int priority) {
-        Node<T>* aux = new Node<T>(info, priority);
+    void add(T info) {
+        Node<T>* aux = new Node<T>(info);
         if (pfirst == NULL) { //daca lista este goala, il adauga ca prim element
             pfirst = aux;
             aux->next = aux;
@@ -51,7 +51,7 @@ public:
     void display() {
         Node <T>* aux = pfirst;
         do {
-            std::cout << "Info" << aux->content << " priority" << aux->priority << std::endl;
+            std::cout << "Info" << aux->content;
             aux = aux->next;
         } while (aux != pfirst);
     }

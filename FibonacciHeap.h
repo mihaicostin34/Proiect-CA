@@ -1,43 +1,45 @@
 #pragma once
-#include "DoubleLinkedList.h";
 #include "Node.h";
+#include "DoubleLinkedList.h";
 #include "BinomialTree.h";
+#include <cmath>
 
 template <typename T> class FibonacciHeap {
 	public:
-		DoubleLinkedList<T> rootList;
-		Node<T> * min;
+		DoubleLinkedList<BinomialTree<T>> rootList;
+		BinomialTree<T> * min;
 		int nrNodes;
 
 		FibonacciHeap() {
 			//constructor
 			nrNodes = 0;
 			min = NULL;
-			DoubleLinkedList<T> rootlist();
+			DoubleLinkedList<BinomialTree<T>> rootlist();
 		}
 
 		void insertNode(T info, int priority) {
-			Node<T>* aux = new Node<T>(info, priority);
+			BinomialTree<T>* aux = new BinomialTree<T>(info, priority);
+			
 			if (min == NULL) {
 				min = aux;
-				rootList->add(info, priority);
+				rootList.add(*aux);
 			}
 			else {
-				rootList->add(info, priority);
+				rootList.add(*aux);
 				if (priority < min->priority) {
-					min = aux;
+					min->info = aux->info;
 				}
 			}
 			nrNodes++;
 		}
 
-		Node<T>* extractMin(){
+		T* extractMin(){
 			//calculates next min
 
 			//deletes current min
 
 			//returns min
-			return min;
+			return min->info;
 		}
 
 		void decreaseKey(T value, int key) {
@@ -52,6 +54,10 @@ template <typename T> class FibonacciHeap {
 			FibonacciHeap* H = new FibonacciHeap;
 
 			return H;
+		}
+
+		int D() {
+			return floor(log(this->nrNodes)/log(2));
 		}
 
 };
