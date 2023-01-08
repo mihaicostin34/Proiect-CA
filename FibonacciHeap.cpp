@@ -10,6 +10,7 @@ int main()
 	heap.insertNode('c', 4);
 	std::cout << heap.nrNodes;
 	std::cout << *(heap.min->info);
+	std:cout << "dzeu";
 
 
 
