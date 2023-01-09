@@ -52,7 +52,16 @@ template <typename T> class FibonacciHeap {
 
 		static FibonacciHeap *  merge(FibonacciHeap * H1, FibonacciHeap * H2) {
 			FibonacciHeap* H = new FibonacciHeap;
-
+			H->min = H1->min;
+			Node<BinomialTree<T>> * secondRootList = H2->rootList.pfirst;
+			do {
+				H1->rootList.add(secondRootList->content);
+				secondRootList = secondRootList->next;
+			} while (secondRootList != H2->rootList.pfirst);
+			if (H1->min == NULL or (H2->min != NULL and H2->min->priority < H1->min->priority)) {
+				H->min = H2->min;
+			}
+			H->nrNodes = H1->nrNodes + H2->nrNodes;
 			return H;
 		}
 
