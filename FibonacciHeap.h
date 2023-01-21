@@ -31,15 +31,34 @@ template <typename T> class FibonacciHeap {
 				}
 			}
 			nrNodes++;
+			consolidate();
 		}
 
 		T* extractMin(){
-			//calculates next min
-
-			//deletes current min
-
-			//returns min
-			return min->info;
+			
+			BinomialTree<T>* z = min;
+			Node<BinomialTree<T>> * minNode = rootList->find(*z);
+			if (z != NULL) {
+				//for each child of z
+				Node<T> * child = z->children->pfirst;
+				do {
+					rootList->add(*child);
+					child = child->next;
+				} while (child != z->children->pfirst);
+				rootList->remove(*minNode);
+				if (z == minNode->next->content) { //list only has one element
+					min = NULL;
+				}
+				else {
+					min = minNode->next->content;
+					consolidate();
+				}
+				this->nrNodes--;
+			}
+			else {
+				return NULL;
+			}
+			return min->root->info;
 		}
 
 		void decreaseKey(T value, int key) {
@@ -62,6 +81,7 @@ template <typename T> class FibonacciHeap {
 				H->min = H2->min;
 			}
 			H->nrNodes = H1->nrNodes + H2->nrNodes;
+			H->consolidate();
 			return H;
 		}
 
@@ -94,7 +114,7 @@ template <typename T> class FibonacciHeap {
 					d++;
 				}
 				A[d] = x;
-
+				list_item = list_item->next;
 			} while (list_item != rootList->pfirst);
 			min = NULL;
 			for (int i = 0; i < n; i++) {
