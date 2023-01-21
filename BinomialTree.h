@@ -21,8 +21,4 @@ template <typename T> class BinomialTree {
 			degree = 0;
 		}
 
-		
-
-
-
 };

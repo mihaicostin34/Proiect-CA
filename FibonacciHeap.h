@@ -69,4 +69,49 @@ template <typename T> class FibonacciHeap {
 			return floor(log(this->nrNodes)/log(2));
 		}
 
+		void consolidate() {
+			int n = D()+1;
+			BinomialTree<T> A[n];
+			for (int i = 0; i < n; i++) {
+				A[i] = NULL;
+			}
+			Node<BinomialTree<T>>* list_item = rootList->pfirst;
+			do {
+			
+				Node<BinomialTree<T>>* x = list_item;
+				int d = x->content->degree;
+				while (A[d] != NULL and d<n-1) {
+					Node<BinomialTree<T>>* y = &A[d];
+					if (x->content->priority > y->content->priority) {
+						Node<BinomialTree<T>> aux = y;
+						y = x;
+						x = aux;
+					}
+					rootList->remove(*(y->content)); //remove y from root list
+					x->content->children->add(*(y->content)); //add y to x children
+					y->content->marked = false;
+					A[d] = NULL;
+					d++;
+				}
+				A[d] = x;
+
+			} while (list_item != rootList->pfirst);
+			min = NULL;
+			for (int i = 0; i < n; i++) {
+				if (A[i] != NULL) {
+					if (min == NULL) {
+						this->rootList->add(*(A[i]));
+						min = &A[i];
+					}
+					else {
+						this->rootList->add(*(A[i]));
+						if (A[i].priority < min->priority)
+							min = &A[i];
+					}
+				}
+			}
+		}
+
+
+
 };
