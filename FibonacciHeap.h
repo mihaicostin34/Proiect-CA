@@ -66,7 +66,8 @@ template <typename T> class FibonacciHeap {
 		}
 
 		void deleteNode(T value){
-		
+			decreaseKey(value, (int)(INFINITY * (-1)));
+			extractMin();
 		}
 
 		static FibonacciHeap *  merge(FibonacciHeap * H1, FibonacciHeap * H2) {
