@@ -8,15 +8,20 @@ int main()
 {
 	FibonacciHeap<char> heap;
 	heap.insertNode('c', 4);
-	std::cout << heap.nrNodes << std::endl; //1
-	std::cout << *(heap.min->info) << std::endl; //c
+	heap.insertNode('e', 8);
+	heap.insertNode('g', 3);
+	heap.insertNode('z', 34);
+	heap.insertNode('a', 6);
+	std::cout << heap.nrNodes << std::endl; //5
+	std::cout << heap.min->info << std::endl; //g
 
+	/*
 	FibonacciHeap<char> heap2;
 	heap2.insertNode('d', 2);
 	FibonacciHeap<char>* res = FibonacciHeap<char>::merge(&heap, &heap2);
 
-	std::cout << *(res->min->info)<< std::endl;
+	std::cout << res->min->info<< std::endl;
 	std::cout << (res->min->priority);
-
+	*/
 }
 

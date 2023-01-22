@@ -19,7 +19,6 @@ template <typename T> class FibonacciHeap {
 
 		void insertNode(T info, int priority) {
 			BinomialTree<T>* aux = new BinomialTree<T>(info, priority);
-			
 			if (min == NULL) {
 				min = aux;
 				rootList.add(*aux);
@@ -34,6 +33,7 @@ template <typename T> class FibonacciHeap {
 			consolidate();
 		}
 
+		/*
 		T* extractMin(){
 			
 			BinomialTree<T>* z = min;
@@ -60,6 +60,7 @@ template <typename T> class FibonacciHeap {
 			}
 			return min->root->info;
 		}
+		*/
 
 		void decreaseKey(T value, int key) {
 		
@@ -67,7 +68,7 @@ template <typename T> class FibonacciHeap {
 
 		void deleteNode(T value){
 			decreaseKey(value, (int)(INFINITY * (-1)));
-			extractMin();
+			//extractMin();
 		}
 
 		static FibonacciHeap *  merge(FibonacciHeap * H1, FibonacciHeap * H2) {
@@ -86,46 +87,43 @@ template <typename T> class FibonacciHeap {
 			return H;
 		}
 
-		int D() {
-			return floor(log(this->nrNodes)/log(2));
-		}
-
 		void consolidate() {
-			int n = D()+1;
-			BinomialTree<T> A[n];
+			int n = (int) floor(log(this->nrNodes) / log(2)) +1;
+			BinomialTree<T> * A = new BinomialTree<T>[n];
 			for (int i = 0; i < n; i++) {
-				A[i] = NULL;
+				A[i].degree = -1;
+		 		std::cout << "Something";
 			}
-			Node<BinomialTree<T>>* list_item = rootList->pfirst;
+			Node<BinomialTree<T>>* list_item = rootList.pfirst;
 			do {
-			
+				std::cout << "Do loop";
 				Node<BinomialTree<T>>* x = list_item;
-				int d = x->content->degree;
-				while (A[d] != NULL and d<n-1) {
-					Node<BinomialTree<T>>* y = &A[d];
-					if (x->content->priority > y->content->priority) {
-						Node<BinomialTree<T>> aux = y;
+				int d = x->content.degree;
+				while (A[d].degree != -1 and d<n-1) {
+					Node<BinomialTree<T>>* y = new Node<BinomialTree<T>>(A[d]);
+					if (x->content.priority > y->content.priority) {
+						Node<BinomialTree<T>> * aux = y;
 						y = x;
 						x = aux;
 					}
-					rootList->remove(*(y->content)); //remove y from root list
-					x->content->children->add(*(y->content)); //add y to x children
-					y->content->marked = false;
-					A[d] = NULL;
+					rootList.remove(y->content); //remove y from root list
+					x->content.children->add(y->content); //add y to x children
+					y->content.marked = false;
+					A[d].degree = -1;
 					d++;
 				}
-				A[d] = x;
+				A[d] = x->content;
 				list_item = list_item->next;
-			} while (list_item != rootList->pfirst);
+			} while (list_item != rootList.pfirst);
 			min = NULL;
 			for (int i = 0; i < n; i++) {
-				if (A[i] != NULL) {
+				if (A[i].root != NULL) {
 					if (min == NULL) {
-						this->rootList->add(*(A[i]));
+						this->rootList.add(A[i]);
 						min = &A[i];
 					}
 					else {
-						this->rootList->add(*(A[i]));
+						this->rootList.add(A[i]);
 						if (A[i].priority < min->priority)
 							min = &A[i];
 					}
