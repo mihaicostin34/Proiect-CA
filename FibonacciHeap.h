@@ -14,17 +14,18 @@ template <typename T> class FibonacciHeap {
 			//constructor
 			nrNodes = 0;
 			min = NULL;
-			DoubleLinkedList<BinomialTree<T>> rootlist();
+			DoubleLinkedList<BinomialTree<T>> rootList();
 		}
 
 		void insertNode(T info, int priority) {
 			BinomialTree<T>* aux = new BinomialTree<T>(info, priority);
 			if (min == NULL) {
 				min = aux;
-				rootList.add(*aux);
+				rootList.add(BinomialTree<T>(info, priority));
+				
 			}
 			else {
-				rootList.add(*aux);
+				rootList.add(BinomialTree<T>(info, priority));
 				if (priority < min->priority) {
 					min->info = aux->info;
 				}
@@ -88,49 +89,60 @@ template <typename T> class FibonacciHeap {
 		}
 
 		void consolidate() {
-			int n = (int) floor(log(this->nrNodes) / log(2)) +1;
-			BinomialTree<T> * A = new BinomialTree<T>[n];
-			for (int i = 0; i < n; i++) {
+			int n = (int)floor(log(nrNodes) / log(2))+1;
+			std::cout << n << std::endl;
+			BinomialTree<T>* A = new BinomialTree<T>[n];
+			for (int i = 0; i < n; i++) { //ok
 				A[i].degree = -1;
-		 		std::cout << "Something";
 			}
-			Node<BinomialTree<T>>* list_item = rootList.pfirst;
+			Node<BinomialTree<T>>* node =rootList.pfirst;
 			do {
-				std::cout << "Do loop";
-				Node<BinomialTree<T>>* x = list_item;
+				Node<BinomialTree<T>> * x = node;
 				int d = x->content.degree;
-				while (A[d].degree != -1 and d<n-1) {
-					Node<BinomialTree<T>>* y = new Node<BinomialTree<T>>(A[d]);
+				std::cout << d;
+				while (A[d].degree != -1 and d<n) {
+					Node<BinomialTree<T>> * y = new Node<BinomialTree<T>>(A[d]);
 					if (x->content.priority > y->content.priority) {
-						Node<BinomialTree<T>> * aux = y;
-						y = x;
-						x = aux;
+						Node<BinomialTree<T>>* aux = x;
+						x = y;
+						y = aux;
 					}
-					rootList.remove(y->content); //remove y from root list
-					x->content.children->add(y->content); //add y to x children
+					rootList.remove(y->content);
+					x->content.children->add(y->content);
+					x->content.degree++;
 					y->content.marked = false;
 					A[d].degree = -1;
 					d++;
 				}
-				A[d] = x->content;
-				list_item = list_item->next;
-			} while (list_item != rootList.pfirst);
-			min = NULL;
+				node = node->next;
+			} while (node != rootList.pfirst);
+			for (int i = 0; i < n; i++)
+				if (A[i].degree != -1)
+					std::cout << i << " ";
+			std::cout << std::endl;
+			this->min = NULL;
 			for (int i = 0; i < n; i++) {
-				if (A[i].root != NULL) {
-					if (min == NULL) {
-						this->rootList.add(A[i]);
+				if (A[i].degree != -1) {
+					if (this->min == NULL) {
+						BinomialTree<T> rootList;
 						min = &A[i];
 					}
 					else {
-						this->rootList.add(A[i]);
-						if (A[i].priority < min->priority)
+						rootList.add(A[i]);
+						if (A[i].priority < min->priority) {
 							min = &A[i];
+						}
 					}
 				}
 			}
+
 		}
 
-
-
+		void display() {
+			Node<BinomialTree<T>>* node = rootList.pfirst;
+			do {
+				std::cout << node->content.info;
+				node = node->next;
+			} while (node != rootList.pfirst);
+		}
 };
