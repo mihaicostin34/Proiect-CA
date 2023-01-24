@@ -31,26 +31,28 @@ template <typename T> class FibonacciHeap {
 				}
 			}
 			nrNodes++;
+			consolidate();
 		}
 
-		/*
-		T* extractMin(){
-			
+		T extractMin(){
 			BinomialTree<T>* z = min;
-			Node<BinomialTree<T>> * minNode = rootList->find(*z);
-			if (z != NULL) {
-				//for each child of z
-				Node<T> * child = z->children->pfirst;
+			if (min != NULL) {
+				Node<BinomialTree<T>>* minNode = rootList.find(*z);
+				Node<BinomialTree<T>> * child = z->children->pfirst;
 				do {
-					rootList->add(*child);
+					rootList.add(child->content);
 					child = child->next;
 				} while (child != z->children->pfirst);
-				rootList->remove(*minNode);
-				if (z == minNode->next->content) { //list only has one element
+				std::cout << minNode->content.info;
+				rootList.remove(minNode->content); 
+
+				if (rootList.isEmpty()) { //list only has one element
 					min = NULL;
+					std::cout << "List is now empty";
 				}
 				else {
-					min = minNode->next->content;
+					minNode = minNode->next;
+					min = &(minNode->content);
 					consolidate();
 				}
 				this->nrNodes--;
@@ -60,7 +62,6 @@ template <typename T> class FibonacciHeap {
 			}
 			return min->root->info;
 		}
-		*/
 
 		void decreaseKey(T value, int key) {
 		
@@ -68,7 +69,7 @@ template <typename T> class FibonacciHeap {
 
 		void deleteNode(T value){
 			decreaseKey(value, (int)(INFINITY * (-1)));
-			//extractMin();
+			extractMin();
 		}
 
 		static FibonacciHeap *  merge(FibonacciHeap * H1, FibonacciHeap * H2) {
@@ -113,12 +114,13 @@ template <typename T> class FibonacciHeap {
 				A[d] = x;
 				node = node->next;
 			} while (node != rootList.pfirst);
+			rootList.empty();
 			this->min = NULL;
 			for (int i = 0; i < n; i++) {
 				if (A[i].degree != -1) {
 					if (this->min == NULL) {
-						DoubleLinkedList<BinomialTree<T>> rootList();
 						min = &A[i];
+						rootList.add(A[i]);
 					}
 					else {
 						rootList.add(A[i]);
@@ -128,13 +130,11 @@ template <typename T> class FibonacciHeap {
 					}
 				}
 			}
-
 		}
 
 		void display() {
 			Node<BinomialTree<T>>* node = rootList.pfirst;
 			do {
-				std::cout<<"a"<<std::endl;
 				node->content.display();
 				node = node->next;
 			} while (node != rootList.pfirst);

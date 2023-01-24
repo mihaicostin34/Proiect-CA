@@ -43,18 +43,7 @@ public:
     }
 
     void remove(T info) {
-        Node<T>* target;
-        target = find(info);
-        if (target != NULL and target != plast) {
-            target->prev->next = target->next;
-            target->next->prev = target->prev;
-        }
-        else {
-            //target is last element
-            plast = target->prev;
-            target->prev->next = target->next;
-            target->next->prev = target->prev;
-        }
+        
     }
 
     int isEmpty() {
@@ -64,9 +53,14 @@ public:
     void display() {
         Node <T>* aux = pfirst;
         do {
-            std::cout << "Info" << aux->content;
+            std::cout << aux->content.info<< " ";
             aux = aux->next;
         } while (aux != pfirst);
+    }
+
+    void empty() {
+        pfirst = NULL;
+        plast = NULL;
     }
 
 };
