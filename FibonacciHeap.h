@@ -3,6 +3,8 @@
 #include "DoubleLinkedList.h";
 #include "BinomialTree.h";
 #include <cmath>
+#include <iostream>
+using namespace std;
 
 template <typename T> class FibonacciHeap {
 	public:
@@ -62,9 +64,45 @@ template <typename T> class FibonacciHeap {
 			return min->root->info;
 		}
 
-		void decreaseKey(T value, int key) {
-		
+		void decreaseKey(BinomialTree<T>* x, int k) {
+			if (k > x->key) {
+				cout << "Error: new key is greater than current key" << endl;
+				return;
+			}
+			x->key = k;
+			BinomialTree<T>* y = x->parent;
+			if (y != NULL && x->key < y->key) {
+				CUT(x, y);
+				CASCADING_CUT(x);
+			}
+			if (x->key < min->key) {
+				min = x;
+			}
 		}
+
+		void CUT(BinomialTree<T>* decr, BinomialTree<T>* x, BinomialTree<T>* y) {
+			// inlaturam pe y din lista de copii a lui x
+			x->children.remove(y);
+			x->degree--;
+			// il adaugam pe y in root list a heapului
+			decr->children.push_back(y);
+			decr->degree++;
+			y->parent = NULL;
+		}
+
+		void CASCADING_CUT(BinomialTree<T>* decr, BinomialTree<T>* y) {
+			BinomialTree<T>* z = y->parent;
+			if (z != NULL) {
+				if (!y->mark) {
+					y->mark = true;
+				}
+				else {
+					CUT(decr, z, y);
+					CASCADING_CUT(decr, z);
+				}
+			}
+		}
+
 
 		void deleteNode(T value){
 			decreaseKey(value, (int)(INFINITY * (-1)));
