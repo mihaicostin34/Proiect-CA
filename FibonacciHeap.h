@@ -65,40 +65,39 @@ template <typename T> class FibonacciHeap {
 		}
 
 		void decreaseKey(BinomialTree<T>* x, int k) {
-			if (k > x->key) {
+			if (k > x->priority) {
 				cout << "Error: new key is greater than current key" << endl;
 				return;
 			}
-			x->key = k;
+			x->priority = k;
 			BinomialTree<T>* y = x->parent;
-			if (y != NULL && x->key < y->key) {
+			if (y != NULL && x->priority < y->priority) {
 				CUT(x, y);
 				CASCADING_CUT(x);
 			}
-			if (x->key < min->key) {
+			if (x->priority < min->priority) {
 				min = x;
 			}
 		}
 
-		void CUT(BinomialTree<T>* decr, BinomialTree<T>* x, BinomialTree<T>* y) {
+		void CUT(BinomialTree<T>* x, BinomialTree<T>* y) {
 			// inlaturam pe y din lista de copii a lui x
 			x->children.remove(y);
 			x->degree--;
 			// il adaugam pe y in root list a heapului
-			decr->children.push_back(y);
-			decr->degree++;
+			rootList.add(*y);
 			y->parent = NULL;
 		}
 
-		void CASCADING_CUT(BinomialTree<T>* decr, BinomialTree<T>* y) {
+		void CASCADING_CUT(BinomialTree<T>* y) {
 			BinomialTree<T>* z = y->parent;
 			if (z != NULL) {
 				if (!y->mark) {
 					y->mark = true;
 				}
 				else {
-					CUT(decr, z, y);
-					CASCADING_CUT(decr, z);
+					CUT(z, y);
+					CASCADING_CUT(z);
 				}
 			}
 		}
@@ -142,8 +141,9 @@ template <typename T> class FibonacciHeap {
 						x = y;
 						y = aux;
 					}
-					x.children->add(y); //makes y a child of x to obtain a higher degree binomial tree
+					x.children->add(y);//makes y a child of x to obtain a higher degree binomial tree
 					x.degree++;
+					y.parent = x;
 					y.marked = false;
 					A[d].degree = -1;
 					d++;
