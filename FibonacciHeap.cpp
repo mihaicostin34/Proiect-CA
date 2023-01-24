@@ -17,13 +17,13 @@ int main()
 	heap.extractMin();
 	heap.display();
 
-	/*
+	
 	FibonacciHeap<char> heap2;
 	heap2.insertNode('d', 2);
 	FibonacciHeap<char>* res = FibonacciHeap<char>::merge(&heap, &heap2);
 
 	std::cout << res->min->info<< std::endl;
 	std::cout << (res->min->priority);
-	*/
+	
 }
 

@@ -44,7 +44,7 @@ template <typename T> class FibonacciHeap {
 					child = child->next;
 				} while (child != z->children->pfirst);
 				std::cout << minNode->content.info;
-				rootList.remove(minNode->content); 
+				rootList.remove(minNode); 
 
 				if (rootList.isEmpty()) { //list only has one element
 					min = NULL;
@@ -52,7 +52,6 @@ template <typename T> class FibonacciHeap {
 				}
 				else {
 					minNode = minNode->next;
-					min = &(minNode->content);
 					consolidate();
 				}
 				this->nrNodes--;

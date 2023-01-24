@@ -42,8 +42,16 @@ public:
         return NULL;
     }
 
-    void remove(T info) {
-        
+    void remove(Node<T> * target) {
+        if (pfirst == NULL or target == NULL) {
+            return;
+        }
+        if (target == pfirst) {
+            pfirst = NULL;
+            return;
+        }
+        target->next->prev = target->prev;
+        target->prev->next = target->next;
     }
 
     int isEmpty() {
