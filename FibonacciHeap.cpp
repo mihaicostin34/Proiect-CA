@@ -13,7 +13,11 @@ int main()
 	heap.insertNode('z', 34);
 	heap.insertNode('a', 6);
 	std::cout << heap.nrNodes << std::endl; //5
+	heap.consolidate();
 	heap.display();
+	std::cout << heap.nrNodes;
+
+
 	/*
 	FibonacciHeap<char> heap2;
 	heap2.insertNode('d', 2);

@@ -31,7 +31,6 @@ template <typename T> class FibonacciHeap {
 				}
 			}
 			nrNodes++;
-			consolidate();
 		}
 
 		/*
@@ -90,41 +89,35 @@ template <typename T> class FibonacciHeap {
 
 		void consolidate() {
 			int n = (int)floor(log(nrNodes) / log(2))+1;
-			std::cout << n << std::endl;
 			BinomialTree<T>* A = new BinomialTree<T>[n];
 			for (int i = 0; i < n; i++) { //ok
 				A[i].degree = -1;
 			}
-			Node<BinomialTree<T>>* node =rootList.pfirst;
+			Node<BinomialTree<T>>* node =rootList.pfirst; //ok
 			do {
-				Node<BinomialTree<T>> * x = node;
-				int d = x->content.degree;
-				std::cout << d;
-				while (A[d].degree != -1 and d<n) {
-					Node<BinomialTree<T>> * y = new Node<BinomialTree<T>>(A[d]);
-					if (x->content.priority > y->content.priority) {
-						Node<BinomialTree<T>>* aux = x;
+				BinomialTree<T> x = node->content; //starts at the first tree in the list
+				int d = x.degree; 
+				while (A[d].degree != -1) { //skips this at the first iteration
+					BinomialTree<T> y = A[d];
+					if (x.priority> y.priority) {
+						BinomialTree<T> aux = x;
 						x = y;
 						y = aux;
 					}
-					rootList.remove(y->content);
-					x->content.children->add(y->content);
-					x->content.degree++;
-					y->content.marked = false;
+					x.children->add(y); //makes y a child of x to obtain a higher degree binomial tree
+					x.degree++;
+					y.marked = false;
 					A[d].degree = -1;
 					d++;
 				}
+				A[d] = x;
 				node = node->next;
 			} while (node != rootList.pfirst);
-			for (int i = 0; i < n; i++)
-				if (A[i].degree != -1)
-					std::cout << i << " ";
-			std::cout << std::endl;
 			this->min = NULL;
 			for (int i = 0; i < n; i++) {
 				if (A[i].degree != -1) {
 					if (this->min == NULL) {
-						BinomialTree<T> rootList;
+						DoubleLinkedList<BinomialTree<T>> rootList();
 						min = &A[i];
 					}
 					else {
@@ -141,7 +134,8 @@ template <typename T> class FibonacciHeap {
 		void display() {
 			Node<BinomialTree<T>>* node = rootList.pfirst;
 			do {
-				std::cout << node->content.info;
+				std::cout<<"a"<<std::endl;
+				node->content.display();
 				node = node->next;
 			} while (node != rootList.pfirst);
 		}

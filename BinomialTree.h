@@ -10,7 +10,12 @@ template <typename T> class BinomialTree {
 		bool marked;
 
 		BinomialTree() {
-		
+			root = NULL;
+			parent = this;
+			children = new DoubleLinkedList<BinomialTree<T>>;
+			this->priority = 0;
+			degree = 0;
+			marked = false;
 		}
 
 		BinomialTree(T info, int priority) {
@@ -23,16 +28,16 @@ template <typename T> class BinomialTree {
 			marked = false;
 		}
 
-		/*void display() {
-			std::cout << info << " " << priority << std::endl;
+		void display() {
+			std::cout << info << " " << priority << " "<< degree << std::endl;
 			if (!children->isEmpty()) {
-				Node<T>* node = children->pfirst;
+				Node<BinomialTree<T>>* node = children->pfirst;
 				do {
-					node->content->display();
+					node->content.display();
 					node = node->next;
 				} while (node != children->pfirst);
 			}
-		}*/
+		}
 
 		bool operator==(BinomialTree<T> &a) {
 			return (a.info == info && a.priority == priority);
