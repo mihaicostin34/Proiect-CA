@@ -16,8 +16,9 @@ int main()
 	std::cout << std::endl;
 	heap.extractMin();
 	heap.display();
+	heap.deleteNode('a');
 
-	
+
 	FibonacciHeap<char> heap2;
 	heap2.insertNode('d', 2);
 	FibonacciHeap<char>* res = FibonacciHeap<char>::merge(&heap, &heap2);
